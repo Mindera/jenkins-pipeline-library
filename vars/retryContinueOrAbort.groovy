@@ -22,17 +22,28 @@ def call(Map vars, Closure body) {
 
         def userChoice
 
-        timeout(time: timeoutMinutes, unit: 'MINUTES') {
-             userChoice = input(
-                message: "🤖 Something went wrong, what do you want to do next?",
-                parameters: [
-                    choice(
-                        name: "Next Action",
-                        choices: ['Retry', 'Continue', 'Abort'].join('\n'),
-                        description: "Whats your next action?"
-                    )
-                ]
-            )
+        try {
+            timeout(time: timeoutMinutes, unit: 'MINUTES') {
+                 userChoice = input(
+                    message: "🤖 Something went wrong, what do you want to do next?",
+                    parameters: [
+                        choice(
+                            name: "Next Action",
+                            choices: ['Retry', 'Continue', 'Abort'].join('\n'),
+                            description: "Whats your next action?"
+                        )
+                    ]
+                )
+            }
+        } catch (final org.jenkinsci.plugins.workflow.steps.FlowInterruptedException timeoutException) {
+            def cause = timeoutException.causes.get(0)
+            if (cause.getUser().toString() == 'SYSTEM') {
+                echo "⏱ Input timed out!"
+                throw exception
+            } else {
+                echo "❌ Aborting input on ${description}."
+                throw timeoutException
+            }
         }
 
         switch (userChoice) {
