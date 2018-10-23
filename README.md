@@ -76,3 +76,29 @@ stage('Demo') {
 
 }
 ```
+
+### runOrSkip
+
+Action that receives a closure to perform arbitrary work but prior to running it asks the user for input on whether to Run or Skip it.
+
+Parameter | Type | Default value | Description
+------------ | ------------- | ------------- | -------------
+description | `String` | `"action"` | description of the action (for logging purposes)
+timeoutMinutes | `int` | `1` | number of minutes before timing out waiting for user input
+markAsUnstableOnSkip | `bool` | `true` | flag indicating whether to mark the build as `"UNSTABLE"` if Skip is chosen
+body | `Closure` | | The work to perform
+
+Example:
+
+```groovy
+@Library('jenkins-pipeline-library')_
+
+stage('Demo') {
+
+  runOrSkip(description: "'my awesome work'", timeoutMinutes: 1) {
+      echo "doing awesome work"
+      (...)
+    }
+
+}
+```
