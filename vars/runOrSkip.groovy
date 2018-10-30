@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def call(Map vars, Closure body) {
+boolean call(Map vars, Closure body) {
 
     vars = vars ?: [:]
 
@@ -30,6 +30,7 @@ def call(Map vars, Closure body) {
         if (cause.getUser().toString() == 'SYSTEM') {
             echo "⏱ Input timed out! Running ${description}..."
             body()
+            return true
         } else {
             echo "❌ Aborting input on ${description}."
             throw timeoutException
@@ -40,7 +41,7 @@ def call(Map vars, Closure body) {
         case 'Run':
             echo "⚙️ Running ${description}..."
             body()
-            break
+            return true
         case 'Skip':
             if (markAsUnstableOnSkip) {
                 echo "⏭ Skipping ${description}, marking build is as unstable."
@@ -48,6 +49,6 @@ def call(Map vars, Closure body) {
             } else {
                 echo "⏭ Skipping ${description}, assuming build is ok."
             }
-            break
+            return false // did not run
     }
 }
