@@ -129,6 +129,10 @@ Parameter | Type | Default value | Description
 ------------ | ------------- | ------------- | -------------
 description | `String` | `"action"` | description of the action (for logging purposes)
 
+Return Type | Description
+------------ | -------------
+`void` | N/A
+
 Example:
 
 ```groovy
