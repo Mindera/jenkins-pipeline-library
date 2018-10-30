@@ -120,3 +120,23 @@ stage('Demo') {
 
 }
 ```
+
+### abortBuildIfNewerExists
+
+Action that aborts a build if the current job has a newer build to execute.
+
+Parameter | Type | Default value | Description
+------------ | ------------- | ------------- | -------------
+description | `String` | `"action"` | description of the action (for logging purposes)
+
+Example:
+
+```groovy
+@Library('jenkins-pipeline-library')_
+
+stage('Demo') {
+
+  abortBuildIfNewerExists(description: "'abort build if newer exists'")
+
+}
+```
