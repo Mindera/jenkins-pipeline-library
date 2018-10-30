@@ -62,6 +62,10 @@ timeoutMinutes | `int` | `10` | number of minutes before timing out waiting for 
 markAsUnstableOnContinue | `bool` | `true` | flag indicating whether to mark the build as `"UNSTABLE"` if Continue is chosen
 body | `Closure` | | The work to perform
 
+Return Type | Description
+------------ | -------------
+`void` | N/A
+
 Example:
 
 ```groovy
@@ -88,17 +92,31 @@ timeoutMinutes | `int` | `1` | number of minutes before timing out waiting for u
 markAsUnstableOnSkip | `bool` | `true` | flag indicating whether to mark the build as `"UNSTABLE"` if Skip is chosen
 body | `Closure` | | The work to perform
 
+Return Type | Description
+------------ | -------------
+`boolean` | `true` if the block was run, `false` otherwise (i.e. was skipped)
+
 Example:
 
 ```groovy
 @Library('jenkins-pipeline-library')_
 
 stage('Demo') {
+  environment {
+    didRun = false
+  }
 
-  runOrSkip(description: "'my awesome work'", timeoutMinutes: 1) {
+  didRun = runOrSkip(description: "'my awesome work'", timeoutMinutes: 1) {
       echo "doing awesome work"
       (...)
     }
+
+  script {
+    if (didRun) {
+      echo "do stuff only when awesome work is run"
+      (...)
+    }
+  }
 
 }
 ```
