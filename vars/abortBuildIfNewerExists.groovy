@@ -1,11 +1,7 @@
 #!/usr/bin/env groovy
 
-def call(Map vars) {
+def call() {
     
-    vars = vars ?: [:]
-
-    def description = vars.get("description", "action")
-
     def jobName = env.JOB_NAME
     def currentBuildNumber = env.BUILD_NUMBER.toInteger()
 
