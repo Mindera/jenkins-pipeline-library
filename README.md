@@ -55,6 +55,8 @@ You're set! 🚀
 
 Action that receives a closure to perform arbitrary work and on failure asks the user for input on whether to Retry, Continue, or Abort the action. It calls itself recursively on Retry, having no hard limit on the number of possible retries.
 
+#### Parameters
+
 Parameter | Type | Default value | Description
 ------------ | ------------- | ------------- | -------------
 description | `String` | `"action"` | description of the action (for logging purposes)
@@ -62,11 +64,11 @@ timeoutMinutes | `int` | `10` | number of minutes before timing out waiting for 
 markAsUnstableOnContinue | `bool` | `true` | flag indicating whether to mark the build as `"UNSTABLE"` if Continue is chosen
 body | `Closure` | | The work to perform
 
-Return Type | Description
------------- | -------------
-`void` | N/A
+#### Return
 
-Example:
+N/A
+
+#### Example
 
 ```groovy
 @Library('jenkins-pipeline-library')_
@@ -85,6 +87,8 @@ stage('Demo') {
 
 Action that receives a closure to perform arbitrary work but prior to running it asks the user for input on whether to Run or Skip it.
 
+#### Parameters
+
 Parameter | Type | Default value | Description
 ------------ | ------------- | ------------- | -------------
 description | `String` | `"action"` | description of the action (for logging purposes)
@@ -92,11 +96,13 @@ timeoutMinutes | `int` | `1` | number of minutes before timing out waiting for u
 markAsUnstableOnSkip | `bool` | `true` | flag indicating whether to mark the build as `"UNSTABLE"` if Skip is chosen
 body | `Closure` | | The work to perform
 
+#### Return
+
 Return Type | Description
 ------------ | -------------
 `boolean` | `true` if the block was run, `false` otherwise (i.e. was skipped)
 
-Example:
+#### Example
 
 ```groovy
 @Library('jenkins-pipeline-library')_
@@ -117,6 +123,30 @@ stage('Demo') {
       (...)
     }
   }
+
+}
+```
+
+### abortBuildIfNewerExists
+
+Action that aborts a build if the current job has a newer build to execute.
+
+#### Parameters
+
+N/A
+
+#### Return
+
+N/A
+
+#### Example
+
+```groovy
+@Library('jenkins-pipeline-library')_
+
+stage('Demo') {
+
+  abortBuildIfNewerExists()
 
 }
 ```
